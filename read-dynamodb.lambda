@@ -5,21 +5,17 @@ const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
 
 exports.handler = (event, context, callback) => {
     
-    var params = {
-        Item: {
-            date: Date.now(),
-            message: "I'm Test"
-        },
-        
-        TableName: 'myTable'
+    let scanningParameters = {
+        TableName: 'myTable',
+        Limit: 100
     };
     
-    docClient.put(params, function(err, data){
-        if(err) {
-            callback(err, null);
-        }else {
-            callback(null, data);
-        }
+    docClient.scan(scanningParameters, function(err, data){
+       if(err){
+           callback(err, null);
+       }else {
+           callback(null, data);
+       }
     });
 
 };
